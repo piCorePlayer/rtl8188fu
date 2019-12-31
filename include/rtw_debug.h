@@ -20,7 +20,6 @@
 #ifndef __RTW_DEBUG_H__
 #define __RTW_DEBUG_H__
 
-
 #define _drv_always_		1
 #define _drv_emerg_			2
 #define _drv_alert_			3
@@ -165,7 +164,10 @@ extern void rtl871x_cedbg(const char *fmt, ...);
 	#define DBG_871X(x, ...) do {} while(0)
 	#define MSG_8192C(x, ...) do {} while(0)
 	#define DBG_8192C(x,...) do {} while(0)
-	#define DBG_871X_LEVEL(x,...) do {} while(0)
+//	#define DBG_871X_LEVEL(x,...) do {} while(0)
+//	#define DBG_871X_SEL_NL(x,...) do {} while(0)
+//	#define DBG_871X_SEL(x,...) do {} while(0)
+	#define RTW_ERR(x, ...) do {} while (0)
 	#define RTW_WARN(x, ...) do {} while(0)
 	#define RTW_INFO(x, ...) do {} while(0)
 #endif
@@ -185,7 +187,7 @@ extern void rtl871x_cedbg(const char *fmt, ...);
 	#define _dbgdump rtl871x_cedbg
 	#define _seqdump(sel, fmt, arg...) _dbgdump(fmt, ##arg)
 #elif defined PLATFORM_LINUX
-	#define _dbgdump printk
+	#define _dbgdump RTW_INFO
 	#define _seqdump seq_printf
 #elif defined PLATFORM_FREEBSD
 	#define _dbgdump printf
@@ -221,6 +223,16 @@ extern void rtl871x_cedbg(const char *fmt, ...);
 				_dbgdump(fmt, ##arg);\
 		}\
 	}while(0)
+		
+	
+#undef RTW_ERR
+#define RTW_ERR(fmt, arg...)     \
+	do {\
+		if (_DRV_ERR_ <= rtw_drv_log_level) {\
+			_dbgdump(DRIVER_PREFIX"ERROR " fmt, ##arg);\
+		} \
+	} while (0)
+
 
 #if defined(_seqdump)
 #define RTW_DBGDUMP 0 /* 'stream' for _dbgdump */

@@ -280,7 +280,6 @@
 /*
  * Debug Related Configure
  */
-#define CONFIG_DEBUG /* DBG_871X, etc... */
 #ifdef CONFIG_DEBUG
 	#define DBG	1	/* for ODM & BTCOEX debug */
 	#define DBG_PHYDM_MORE 0
